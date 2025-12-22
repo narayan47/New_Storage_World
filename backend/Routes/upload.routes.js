@@ -13,7 +13,8 @@ router.route("/create").post(upload.single("file"),async(req,res)=>{
             title:req.file.originalname,
             createdBy:req.user._id,
             inherit:req.body.inherit,
-            publish_id:req.file.filename
+            publish_id:req.file.filename,
+            mimeType:req.file.mimetype
         })
         res.send(req.file.originalname)
        

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link,useLocation } from "react-router-dom";
 import axios from "axios";
+import ProgressCircle from "./progressCircle";
+import { transformValueTypes } from "framer-motion";
+import useSmoothProgress from "./smoothProgress";
 
 function Footer({ current, files, star ,update ,ffupdate,user}) {
   const [color, setColor] = useState("currentColor");
@@ -11,7 +14,10 @@ function Footer({ current, files, star ,update ,ffupdate,user}) {
   const [file,setFiles]=useState();
   const [error, setError] = useState("");
   const [showFilemodal,setShowFileModal]=useState(false);
+  const [loading,setLoading]=useState(false);
   const location=useLocation();
+  const [progress,setProgress]=useState();
+  const smoothProgress = useSmoothProgress(progress);
   let path=location.pathname;
   let ownpath=location.pathname;
   const arr=["/home","/files","/star","/User_dashboard"];
@@ -29,42 +35,95 @@ function Footer({ current, files, star ,update ,ffupdate,user}) {
     setName("");
   };
 
-  const Create = () => {
+  const Create = async() => {
+    try{
+
     if (name === "") {
       setError("Empty Folder Not Created So Give Name");
       return;
     }
-    ownpath=`${ownpath}/${name}`
-    axios.post("/api/folder/files",{name:name,path:path,ownpath:ownpath})
-    .then(res=>{
-      alert(`Folder "${name}" created! ✅`);
-       if (typeof ffupdate === "function") {
-          ffupdate(name); 
-        }
-    })
-    .catch(err=>alert(err.response.data.message))
-    
     close();
+    setLoading(true)
+    ownpath=`${ownpath}/${name}`
+   await axios.post("/api/folder/files",{name:name,path:path,ownpath:ownpath},{
+      onUploadProgress: (e) => {
+       if (!e.total) return;
+
+          let percent = Math.round((e.loaded * 100) / e.total);
+
+          if (percent >= 95) percent = 99;
+
+          setProgress(percent);
+      }})
+    .then(res=>{
+      setProgress(100);
+    })
+    .catch(err=>{
+      setProgress(0)
+      alert(err.response.data.message)})
+  }
+  catch(err)
+  {
+    console.log(err.message)
+  }
+  finally
+  {
+    setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+         alert(`Folder "${name}" created! ✅`);
+         if (typeof ffupdate === "function") {
+          ffupdate(); 
+        }
+      }, 500);
+    
+  }
+    
   };
 
-  const FileUpd= () => {
+  const FileUpd= async() => {
+    try
+    {
     if (file === null) {
       setError("Empty file Not upload So select file");
       return;
     }
+    close()
+    setLoading(true)
     const formData= new FormData();
   formData.append("file",file);
   formData.append("inherit",path)
-     axios.post("/api/files/create",formData)
+    await  axios.post("/api/files/create",formData,{
+      onUploadProgress: (e) => {
+       if (!e.total) return;
+
+          let percent = Math.round((e.loaded * 100) / e.total);
+
+          if (percent >= 95) percent = 99;
+
+          setProgress(percent);
+      }})
      .then(res=>{
+      setProgress(100);
       alert(`file "${res.data}" uploaded! ✅`);
       if (typeof update === "function") {
-          update(path); 
+          update(Date.now()); 
         }
     })
-     .catch(err=>console.log("error",err.message))
-       
-    close(); 
+     .catch(err=>{
+      setProgress(0)
+      alert("Have some problem in File Uploading")}) 
+  }
+  catch(err)
+  {
+    console.log(err.message)
+  }
+  finally{
+    setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+      }, 500);
+  }
   };
 
   const CreateFolder = () => {
@@ -90,8 +149,21 @@ function Footer({ current, files, star ,update ,ffupdate,user}) {
     );
   };
 
+  
+
+
+
+
   return (
     <>
+
+    {/* Upload/Create in progress */}
+    {
+      loading &&
+      <ProgressCircle percent={smoothProgress} />
+    }
+
+
       {/* Create Menu */}
       {showCreateMenu && (
         <div className="fixed inset-0 flex items-center justify-center z-[9999] bg-black/80">

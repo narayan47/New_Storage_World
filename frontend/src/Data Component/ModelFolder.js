@@ -9,14 +9,38 @@ function ModelFolder(){
      const [ffs,setFss]=useState(false);
     const[folder,setFolder]=useState([]);
     const location=useLocation();
+    const[ppath,setPpath]=useState();
     const path=location.pathname;
+    if(ppath!==path)
+    {
+      setPpath(path)
+    }
+   
     const[fupdate,setFupdate]=useState()
     const navigate=useNavigate()
+    useEffect(()=>{
+      axios.post(`/api/path/cheack`,{path:ppath})
+      .then(res=>{})
+      .catch(err=>
+       {
+        if(err.response.status===404){
+          navigate("/")
+        } 
+      else if(err.response.status===401)
+      {
+        navigate("/404-NotFound")
+      }
+    })
+    },[ppath])
     useEffect(()=>{
       setFss(true)
         axios.get("/api/folder/files", {params: {path:path}})
         .then(res=>setFolder(res.data))
-        .catch(err=>navigate("/login"))
+        .catch(err=>{
+           if(err.response.status===404){
+          navigate("/")
+        } 
+        })
     },[fupdate,path])
     
 
@@ -31,7 +55,7 @@ function ModelFolder(){
     }
 
     const ffupdate = () => {
-  setFupdate(prev => !prev)
+  setFupdate(Date.now())
 }
     if(folder.length<=0 )
         {

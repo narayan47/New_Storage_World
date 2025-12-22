@@ -4,13 +4,13 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../config/cloudinary.js";
 
 
-const storage = new CloudinaryStorage(
-{
+const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
+  params: async (req, file) => ({
     folder: "uploads",
-    resource_type: "auto",
-  },
+    resource_type: "raw",          // 🔥 IMPORTANT
+    public_id: file.originalname,  // 🔥 KEEP ORIGINAL NAME
+  }),
 });
 
 const upload = multer({

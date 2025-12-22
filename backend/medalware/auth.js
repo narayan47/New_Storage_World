@@ -6,13 +6,13 @@ const authenticate = async (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!accessToken && !refreshToken) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(404).json({ message: "Unauthorized" });
     }
 
     if (accessToken) {
       const decoded = User.verifyToken(accessToken);
       if (!decoded) {
-        return res.status(401).json({ message: "Invalid access token" });
+        return res.status(404).json({ message: "Invalid access token" });
       }
 
       req.user = decoded;
@@ -21,12 +21,12 @@ const authenticate = async (req, res, next) => {
 
     const refreshDecoded = User.verifyRefreshToken(refreshToken);
     if (!refreshDecoded) {
-      return res.status(401).json({ message: "Invalid refresh token" });
+      return res.status(404).json({ message: "Invalid refresh token" });
     }
 
     const user = await User.findById(refreshDecoded._id);
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const newAccessToken = user.getAccessToken()

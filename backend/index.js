@@ -11,6 +11,8 @@ import folders from "./Routes/folder.routes.js"
 import logout from "./Routes/logout.js"
 import userData from "./Routes/userdata.route.js"
 import StarFiles from "./Routes/star.route.js"
+import downloadFile from "./Routes/download.route.js"
+import cheackFileExist from "./Routes/cheackFileExist.route.js"
 import cors from "cors"
 
 
@@ -27,6 +29,8 @@ app.use("/api/folder",authenticate,folders);
 app.use("/api/deshbord",authenticate,userData)
 app.use("/api/star",authenticate,StarFiles)
 app.use("/api/logout",authenticate,logout)
+app.use("/api/download",authenticate,downloadFile)
+app.use("/api/path",authenticate,cheackFileExist)
 app.use('/api/login',authenticate,(req,res)=>{
     res.send(200)
 })

@@ -6,41 +6,68 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Home from "./Home";
+import ProgressCircle from "../progressCircle";
+import useSmoothProgress from "../smoothProgress";
 function Files()
 {
-    const [Ffiles,setFfiles]=useState();
     const [folder,setFolder]=useState([])
     const [fupdate,setFupdate]=useState();
+    const [progress,setProgress]=useState()
     const location=useLocation();
     const navigate=useNavigate()
-    
+    const [loading,setLoading]=useState(false);
     useEffect(()=>{
     axios.get("/api/folder/files", {params: {
     path: "/files"}
   })
     .then(res=>setFolder(res.data))
-    .catch(err=>navigate("/login"))
+    .catch(err=>{if(err.response.status==404){
+            navigate("/login")
+          }})
     },[fupdate])
     
-    const Fdelete=(id,ownpath)=>{
-        
-        axios.post("/api/folder/delete",{id:id,ownpath:ownpath})
-        .then(setFupdate(id))
-        .catch(err=>console.log(err.message))
-    }
+   const Fdelete = async (id, ownpath) => {
+  let fakeProgress;
+
+  try {
+    setLoading(true);
+    setProgress(10);
+
+    // fake progress animation
+    fakeProgress = setInterval(() => {
+      setProgress((p) => (p < 90 ? p + 5 : p));
+    }, 200);
+
+    await axios.post("/api/folder/delete", { id, ownpath });
+
+    setProgress(100);
+    setFupdate(Date.now());
+  } catch (err) {
+    alert(err.message);
+    setProgress(0);
+  } finally {
+    clearInterval(fakeProgress);
+    setTimeout(() => {
+      setLoading(false);
+      setProgress(0);
+    }, 500);
+  }
+};
+
 
     const FolderClicked=(title)=>{
         navigate(`/files/${title}`)
     }
     
     const ffupdate = () => {
-  setFupdate(prev => !prev)
+    setFupdate(Date.now())
 }
 
       if(folder.length<=0 )
         {
               return(
         <>
+       {loading && <ProgressCircle percent={progress}/>}
          <div className="flex shadow py-5 my-5 mx-2 px-3">
   <div className="flex justify-center w-full">
     <h2 className="text-center text-lg font-semibold ">
@@ -90,7 +117,7 @@ function Files()
      
          <Home paths={location.pathname}/>
 
-      <Footer files={true} ffupdate={()=>setFupdate("folders")} update={()=>setFupdate("files")} />
+      <Footer files={true} ffupdate={()=>setFupdate(Date.now())} update={()=>setFupdate(Date.now())} />
       </>
       );
       }

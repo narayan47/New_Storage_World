@@ -3,14 +3,21 @@ import Footer from "../Footer";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import useDownload from "../Download.js";
 import axios from "axios";
+import ProgressCircle from "../progressCircle.js";
+import useSmoothProgress from "../smoothProgress.js";
 function Home({paths})
 {
     const [current,setCurrent]=useState(false);
     const [files,setFiles]=useState({});
     const[temp,setTemp]=useState();
    const location=useLocation();
+   const [loading,setLoading]=useState(false)
+   const [progress,setProgress]=useState()
+   const smoothProgress = useSmoothProgress(progress);
     const navigate=useNavigate();
+    const {downloadFiles}=useDownload()
     let start;
     useEffect(()=>{
       if(paths){
@@ -18,7 +25,7 @@ function Home({paths})
          axios.get(`${start}${paths}`)
         .then(res=>setFiles(res.data))
         .catch(err=>
-          {if(err.response.status==401){
+          {if(err.response.status==404){
             navigate("/login")
           }})
       }
@@ -27,38 +34,55 @@ function Home({paths})
         axios.get("/api/home/files")
         .then(res=>setFiles(res.data))
         .catch(err=>
-          {if(err.response.status==401){
+          {if(err.response.status==404){
             navigate("/login")
           }})
         }
     },[,temp,paths])
 
     const update=(path)=>{
-        setTemp(path)
+        setTemp(Date.now())
     }
 
 
-    const priview=(url)=>{
-      const a=document.createElement('a')
-      a.href=url
-      a.download=''
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-    }
 
     const star=(id)=>{
       axios.post("/api/star/create",{id:id})
       .then(res=>setTemp(res.data))
       .catch(err=>console.log(err.message,"error"))
     };
-    const Ddelete=(id)=>{
-      axios.post("/api/home/files",{id:id})
+    const Ddelete=async(id)=>{
+      try{
+        setLoading(true)
+     await axios.post("/api/home/files",{id:id},{
+         onUploadProgress: (e) => {
+       if (!e.total) return;
+
+          let percent = Math.round((e.loaded * 100) / e.total);
+
+          if (percent >= 95) percent = 99;
+
+          setProgress(percent);
+      }
+      })
       .then(res=>{
+        setProgress(100)
         alert(res.data.message);
         setTemp(res.data.message)
       })
       .catch(err=>console.log("error",err.message))
+
+    }
+    catch(err)
+    {
+      console.log(err.message)
+    }
+    finally{
+      setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+      }, 500);
+    }
 
     };
     useEffect(()=>{
@@ -72,6 +96,7 @@ function Home({paths})
         {
               return(
         <>
+        {loading && <ProgressCircle percent={smoothProgress}/>}
                     <div className="flex shadow py-5 my-5 mx-2 px-3 justify-center">
                       <h1 className="text-green-400 text-lg uppercase"></h1>
                     </div>
@@ -107,7 +132,7 @@ function Home({paths})
   </button>
 </td>
  <td className="flex ml-2">
-  <button onClick={()=>priview(item.path)}>
+  <button onClick={()=>downloadFiles(item)}>
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-download" viewBox="0 0 16 16">
   <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
   <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
@@ -121,7 +146,10 @@ function Home({paths})
                     </tbody>
                     </table>
                 </div>
-
+                  
+            </div>
+            <div className="flex">
+              <div className="mt-8"></div>
             </div>
                     <Footer current={current} update={update} />
             </>

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import Nsw from "./component/Nsw";
 import User_dashboard from "./Data Component/User_dashboard";
 import ModelFolder from "./Data Component/ModelFolder";
+import NotFound from "./component/NotFound";
 
 function Navbar() {
   const [logout, setLogout] = useState(null);
@@ -67,8 +68,8 @@ function App() {
         <Route path="/star" element={<Star />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/User_dashboard" element={<User_dashboard/>} />
-        
          <Route path="*" element={<Error />} />
+         <Route path="/404-NotFound" element={<NotFound/>}/>
       </Routes>
     </Router>
   );

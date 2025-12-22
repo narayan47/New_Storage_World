@@ -25,6 +25,11 @@ const FileSchema= new mongoose.Schema({
     favorete:{
         type:Boolean,
         default:false
+    },
+    mimeType:
+    {
+        type:String,
+        require:true
     }
 
 },{timestamps:true})
