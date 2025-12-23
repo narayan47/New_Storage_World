@@ -17,7 +17,7 @@ function Home({paths})
    const [progress,setProgress]=useState()
    const smoothProgress = useSmoothProgress(progress);
     const navigate=useNavigate();
-    const {downloadFiles}=useDownload()
+    const {downloadFiles,loadingdownload,smoothProgressdownload}=useDownload()
     let start;
     useEffect(()=>{
       if(paths){
@@ -96,6 +96,7 @@ function Home({paths})
         {
               return(
         <>
+        {loadingdownload && <ProgressCircle percent={smoothProgressdownload}/>}
         {loading && <ProgressCircle percent={smoothProgress}/>}
                     <div className="flex shadow py-5 my-5 mx-2 px-3 justify-center">
                       <h1 className="text-green-400 text-lg uppercase"></h1>
