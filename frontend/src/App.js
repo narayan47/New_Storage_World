@@ -41,12 +41,12 @@ function Navbar() {
   return (
     <nav className="bg-white shadow-md flex items-center justify-between px-4 py-2">
       <div className="flex items-center gap-2">
-        <a href="">
+        <Link to="/" className="flex items-center gap-2">
           <img src="favicon.png" width={40} alt="logo" />
-        </a>
-        <a href="">
+        </Link>
+        <Link to="/" className="text-gray-800 hover:text-gray-600 font-bold text-xl">
           <h3 className="text-lg font-semibold">NSW</h3>
-        </a>
+        </Link>
       </div>
        <div className="flex gap-2">{logout} </div>
      
@@ -68,8 +68,8 @@ function App() {
         <Route path="/star" element={<Star />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/User_dashboard" element={<User_dashboard/>} />
-         <Route path="*" element={<Error />} />
          <Route path="/404-NotFound" element={<NotFound/>}/>
+         <Route path="*" element={<Error />} />
       </Routes>
     </Router>
   );
