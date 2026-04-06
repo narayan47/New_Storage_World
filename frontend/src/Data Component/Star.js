@@ -17,7 +17,7 @@ function Star()
  useEffect(()=>{
     axios.get("/api/star/files")
     .then(res => {
-  console.log("API:", res.data);
+ 
   
   if (Array.isArray(res.data)) {
     setFiles(res.data);
