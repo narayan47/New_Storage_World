@@ -68,8 +68,9 @@ function App() {
         <Route path="/star" element={<Star />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/User_dashboard" element={<User_dashboard/>} />
+        <Route path="/index.html" element={<Nsw />} />
          <Route path="/404-NotFound" element={<NotFound/>}/>
-         <Route path="*" element={<Error />} />
+         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
