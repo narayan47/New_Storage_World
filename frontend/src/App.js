@@ -16,27 +16,9 @@ function Navbar() {
   const [logout, setLogout] = useState(null);
   const location = useLocation();
 
-  function userDesh(){
-    
-  }
-  useEffect(() => {
-    if (
-  !location.pathname.startsWith("/login") &&
-  !location.pathname.startsWith("/registration") &&
-  !location.pathname.endsWith("/")
-
-) {
-       setLogout(
-        <Link
-          to="/logout"
-          className="text-blue-600 hover:text-blue-800 font-medium"
-        >
-          Logout
-        </Link>
-      );
-      }
-
-  }, [location]); 
+  const hideNavbar =
+    location.pathname === "/login" ||
+    location.pathname === "/registration";
 
   return (
     <nav className="bg-white shadow-md flex items-center justify-between px-4 py-2">
@@ -48,8 +30,17 @@ function Navbar() {
           <h3 className="text-lg font-semibold">NSW</h3>
         </Link>
       </div>
-       <div className="flex gap-2">{logout} </div>
-     
+
+      {!hideNavbar && (
+        <div className="flex gap-2">
+          <Link
+            to="/logout"
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            Logout
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }
