@@ -10,7 +10,7 @@ import useSmoothProgress from "../smoothProgress.js";
 function Home({paths})
 {
     const [current,setCurrent]=useState(false);
-    const [files,setFiles]=useState({});
+    const [files,setFiles]=useState([]);
     const[temp,setTemp]=useState();
    const location=useLocation();
    const [loading,setLoading]=useState(false)
@@ -106,7 +106,7 @@ function Home({paths})
                     <table>
                       <tbody>
                     {
-                        files.map((item)=>{
+                        files?.map((item)=>{
                           return  <tr className="flex py-2" key={item._id}>
                                 <td> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" 
      fill="green" className="bi bi-file-earmark-fill" 
