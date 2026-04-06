@@ -20,7 +20,17 @@ function Files()
     axios.get("/api/folder/files", {params: {
     path: "/files"}
   })
-    .then(res=>setFolder(res.data))
+    .then(res => {
+    if (Array.isArray(res.data)) {
+      setFolder(res.data);
+    } else if (Array.isArray(res.data.files)) {
+      setFolder(res.data.files);
+    } else if (Array.isArray(res.data.data)) {
+      setFolder(res.data.data);
+    } else {
+      setFolder([]);
+    }
+  })
     .catch(err=>{if(err.response.status==404){
             navigate("/login")
           }})
