@@ -16,7 +16,17 @@ function Star()
  const location=useLocation()
  useEffect(()=>{
     axios.get("/api/star/files")
-    .then(res=>setFiles(res.data))
+    .then(res => {
+  console.log("API:", res.data);
+  
+  if (Array.isArray(res.data)) {
+    setFiles(res.data);
+  } else if (Array.isArray(res.data.files)) {
+    setFiles(res.data.files);
+  } else {
+    setFiles([]); // fallback
+  }
+})
     .catch(err=>{if(err.response.status==404){
             navigate("/login")
           }})

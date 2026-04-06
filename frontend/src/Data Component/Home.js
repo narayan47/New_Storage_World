@@ -23,7 +23,17 @@ function Home({paths})
       if(paths){
         start='/api/folder/path'
          axios.get(`${start}${paths}`)
-        .then(res=>setFiles(res.data))
+       .then(res => {
+  console.log("API:", res.data);
+  
+  if (Array.isArray(res.data)) {
+    setFiles(res.data);
+  } else if (Array.isArray(res.data.files)) {
+    setFiles(res.data.files);
+  } else {
+    setFiles([]); // fallback
+  }
+})
         .catch(err=>
           {if(err.response.status==404){
             navigate("/login")
@@ -32,7 +42,17 @@ function Home({paths})
       else
       {
         axios.get("/api/home/files")
-        .then(res=>setFiles(res.data))
+        .then(res => {
+  console.log("API:", res.data);
+  
+  if (Array.isArray(res.data)) {
+    setFiles(res.data);
+  } else if (Array.isArray(res.data.files)) {
+    setFiles(res.data.files);
+  } else {
+    setFiles([]); // fallback
+  }
+})
         .catch(err=>
           {if(err.response.status==404){
             navigate("/login")
