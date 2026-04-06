@@ -24,7 +24,6 @@ function Home({paths})
         start='/api/folder/path'
          axios.get(`${start}${paths}`)
        .then(res => {
-  console.log("API:", res.data);
   
   if (Array.isArray(res.data)) {
     setFiles(res.data);
@@ -43,7 +42,6 @@ function Home({paths})
       {
         axios.get("/api/home/files")
         .then(res => {
-  console.log("API:", res.data);
   
   if (Array.isArray(res.data)) {
     setFiles(res.data);
