@@ -24,7 +24,7 @@ function Login()
     return; 
   }
   else{
-      axios.post("api/user/login",{email:email,password:password})
+      axios.post("/api/user/login",{email:email,password:password})
       .then(res=>{
         if(res.data.status===true)
               navigate('/home')
