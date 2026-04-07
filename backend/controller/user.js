@@ -3,6 +3,7 @@ import User from "../model/User.js";
  export const userCreate=async (req,res)=>{
       try
         {
+            console.log("user data",req.body)
             const user=await User.create({
             firstname:req.body.f_name,
             lastname:req.body.l_name,
@@ -23,6 +24,7 @@ import User from "../model/User.js";
 export const userLogin=(async(req,res)=>{
     try
     {
+        console.log("login data",req.body)
     const user=await User.findOne({email:req.body.email})
     if(!user){
         return res.status(400).json({
