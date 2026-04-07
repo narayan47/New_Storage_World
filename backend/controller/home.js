@@ -5,6 +5,7 @@ import Files from "../model/FileData.js"
 export const allfiles=async (req,res)=>{
     try
     {
+        res.set("Cache-Control", "no-store");
         if (!req.user || !req.user._id) {
     return res.status(401).json({
         status: false,

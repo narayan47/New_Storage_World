@@ -13,6 +13,7 @@ router.get("/now",async(req,res)=>{
   { $pull: { refreshTokens: { token: req.cookies.refreshToken } } })
         res.clearCookie("accessToken");
         res.clearCookie("refreshToken")
+        res.set("Cache-Control", "no-store");
         res.send()
     }
     catch(err)

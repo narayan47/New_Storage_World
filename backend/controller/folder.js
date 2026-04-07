@@ -5,7 +5,7 @@ import Favorate from "../model/Favorate.js";
 
 export const getFolder=async(req,res)=>{
     try
-    {
+    {res.set("Cache-Control", "no-store");
         if (!req.user || !req.user._id) {
     return res.status(401).json({
         status: false,
