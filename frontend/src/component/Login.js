@@ -11,11 +11,11 @@ function Login()
   const [error,setError]=useState("");
   const navigate=useNavigate();
 
-  useEffect(()=>{
-    axios.get("/api/login")
-    .then(res=>navigate('/home'))
-    .catch(err=>console.log("plase login to access nsw"))
-  },[])
+  // useEffect(()=>{
+  //   axios.get("/api/login")
+  //   .then(res=>navigate('/home'))
+  //   .catch(err=>console.log("plase login to access nsw"))
+  // },[])
 
   const Submit = (e) => {
   e.preventDefault();

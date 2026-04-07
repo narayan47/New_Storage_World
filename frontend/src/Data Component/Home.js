@@ -34,7 +34,10 @@ function Home({paths})
   }
 })
         .catch(err=>
-          {if(err.response.status==404){
+          {
+             console.log(err.response.status)
+            if(err.response.status==404){
+            console.log(err.response.status)
             navigate("/login")
           }})
       }
