@@ -31,9 +31,11 @@ function Files()
       setFolder([]);
     }
   })
-    .catch(err=>{if(err.response.status==404){
-            navigate("/login")
-          }})
+    .catch(err=>{
+      if(err.response?.status === 401){
+  navigate("/login");
+}
+    })
     },[fupdate])
     
    const Fdelete = async (id, ownpath) => {

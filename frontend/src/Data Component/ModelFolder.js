@@ -26,10 +26,9 @@ function ModelFolder(){
         if(err.response.status===404){
           navigate("/")
         } 
-      else if(err.response.status===401)
-      {
-        navigate("/404-NotFound")
-      }
+      else if(err.response?.status === 401){
+  navigate("/login");
+}
     })
     },[ppath])
     useEffect(()=>{

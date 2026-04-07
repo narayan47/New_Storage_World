@@ -5,6 +5,12 @@ import Files from "../model/FileData.js"
 export const allfiles=async (req,res)=>{
     try
     {
+        if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
         const files=await Files.find({createdBy:req.user._id})
         res.send(files)
     }
@@ -17,6 +23,12 @@ export const allfiles=async (req,res)=>{
 
 export const deleteFiles=async(req,res)=>{
     try{
+        if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
         const files=await Files.findById(req.body.id)
         if(!files) return res.status(401).json({message:"file are not availebel"})
      await cloudinary.uploader.destroy(files.publish_id,{

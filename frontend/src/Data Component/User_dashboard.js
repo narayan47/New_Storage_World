@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../Footer";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 function User_dashboard() {
   const [user,setUser]=useState([]);
+  const navigate=useNavigate()
   useEffect(()=>{
     axios.get("/api/deshbord/data")
     .then(res=>setUser([res.data]))
-    .catch(err=>console.log(err.message))
+    .catch(err=>{if(err.response?.status === 401){
+  navigate("/login");
+}})
   },[])
 
   return (

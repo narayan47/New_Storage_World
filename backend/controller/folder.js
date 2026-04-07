@@ -6,6 +6,12 @@ import Favorate from "../model/Favorate.js";
 export const getFolder=async(req,res)=>{
     try
     {
+        if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
         const folder=await Folder.find({createdBy:req.user._id});
         const nowFolder=[];
         for(let i of folder)
@@ -27,6 +33,12 @@ export const getFolder=async(req,res)=>{
 }
 
 export const createFolder=async(req,res)=>{
+    if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
     const finded=await Folder.findOne({createdBy:req.user._id,title:req.body.name,inherit:req.body.path})
     if(finded)
     {
@@ -44,6 +56,12 @@ export const createFolder=async(req,res)=>{
 
 export const deleteFolder=async(req,res)=>{
 try{
+    if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
     const folder=await Folder.findById({_id:req.body.id})
     if(!folder) return res.status(401)
     const path=folder.ownpath

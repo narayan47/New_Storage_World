@@ -27,9 +27,11 @@ function Star()
     setFiles([]); // fallback
   }
 })
-    .catch(err=>{if(err.response.status==404){
-            navigate("/login")
-          }})
+    .catch(err=>{
+      if(err.response?.status === 401){
+  navigate("/login");
+}
+    })
  },[temp])
 
   const Ddelete=(id)=>{

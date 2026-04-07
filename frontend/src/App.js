@@ -18,7 +18,8 @@ function Navbar() {
 
   const hideNavbar =
     location.pathname === "/login" ||
-    location.pathname === "/registration";
+    location.pathname === "/registration" || 
+    location.pathname.endsWith("/");
 
   return (
     <nav className="bg-white shadow-md flex items-center justify-between px-4 py-2">

@@ -32,7 +32,7 @@ app.use("/api/logout",authenticate,logout)
 app.use("/api/download",authenticate,downloadFile)
 app.use("/api/path",authenticate,cheackFileExist)
 app.use('/api/login',authenticate,(req,res)=>{
-    res.send(200)
+     res.status(200).json({ status: true });
 })
 
 serverStart(app)

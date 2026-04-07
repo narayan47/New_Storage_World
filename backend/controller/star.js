@@ -3,6 +3,12 @@ import Files from "../model/FileData.js"
 
 export const makeFavorate=async(req,res)=>{
     try{
+    if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
     const cheackFav=await Favorate.find({inherit:req.body.id,makeBy:req.user._id})
     if(cheackFav.length>0)
     {
@@ -37,6 +43,12 @@ catch(err)
 
 export const favFiles=async(req,res)=>{
     try{
+        if (!req.user || !req.user._id) {
+    return res.status(401).json({
+        status: false,
+        message: "Unauthorized access"
+    });
+}
        const fav=await Favorate.find({makeBy:req.user._id});
        if(fav.length>0)
        {

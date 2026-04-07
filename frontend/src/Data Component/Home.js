@@ -35,11 +35,11 @@ function Home({paths})
 })
         .catch(err=>
           {
-             console.log(err.response.status)
-            if(err.response.status==404){
-            console.log(err.response.status)
-            navigate("/login")
-          }})
+            console.log("nsg",err.response)
+            if(err.response?.status === 401){
+            navigate("/login");
+}
+          })
       }
       else
       {
@@ -55,9 +55,12 @@ function Home({paths})
   }
 })
         .catch(err=>
-          {if(err.response.status==404){
-            navigate("/login")
-          }})
+          {
+            console.log("msg",err.response)
+            if(err.response?.status === 401){
+  navigate("/login");
+}
+          })
         }
     },[,temp,paths])
 
