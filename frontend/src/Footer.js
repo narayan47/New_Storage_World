@@ -45,7 +45,7 @@ function Footer({ current, files, star ,update ,ffupdate,user}) {
     close();
     setLoading(true)
     ownpath=`${ownpath}/${name}`
-   await axios.post("/api/folder/files",{name:name,path:path,ownpath:ownpath},{
+   await axios.post(`${process.env.REACT_APP_API_URL}/api/folder/files`,{name:name,path:path,ownpath:ownpath},{withCredentials:true},{
       onUploadProgress: (e) => {
        if (!e.total) return;
 
@@ -93,7 +93,7 @@ function Footer({ current, files, star ,update ,ffupdate,user}) {
     const formData= new FormData();
   formData.append("file",file);
   formData.append("inherit",path)
-    await  axios.post("/api/files/create",formData,{
+    await  axios.post(`${process.env.REACT_APP_API_URL}/api/files/create`,formData,{withCredentials:true},{
       onUploadProgress: (e) => {
        if (!e.total) return;
 

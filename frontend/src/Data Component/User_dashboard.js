@@ -18,7 +18,7 @@ function User_dashboard() {
   return (
     <>
       <div className="flex justify-center items-center mt-10 shadow w-4/5 ml-32">
-        <table className="table-auto border-collapse border border-gray-300 w-full text-left">
+        <table className="table-auto border-collapse border border-gray-300 text-left">
           <tbody>
             { user.map(item=>(
               <tr key={item._id} className="border border-gray-300">
