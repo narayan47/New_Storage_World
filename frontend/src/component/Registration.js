@@ -21,7 +21,7 @@ function Registration()
     const emregex=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     if(email=="") return;
     if(!emregex.test(email)) return;
-     axios.post("/api/user/register/email",{email}).then((res)=>{
+     axios.post(`${process.env.REACT_APP_API_URL}/api/user/register/email`,{email}).then((res)=>{
         if(!res.data=="")
         {
           setError("Email Already exist so use diffrent Email");
