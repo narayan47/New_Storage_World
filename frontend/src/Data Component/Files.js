@@ -17,7 +17,7 @@ function Files()
     const navigate=useNavigate()
     const [loading,setLoading]=useState(false);
     useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_API_URL}/api/folder/files`,{withCredentials:true},{params: {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/folder/files`,{withCredentials:true,params: {
     path: "/files"}
   })
     .then(res => {
