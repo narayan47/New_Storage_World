@@ -6,7 +6,7 @@ import axios from "axios";
 function Logout(){
     const navigate=useNavigate();
    useEffect(() => {
-    axios.get("/api/logout/now")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/logout/now`)
     .then(navigate("/login"))
     .catch(err=>console.log(err))
   }, [navigate]);

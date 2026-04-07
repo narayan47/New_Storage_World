@@ -11,11 +11,11 @@ function Login()
   const [error,setError]=useState("");
   const navigate=useNavigate();
 
-  // useEffect(()=>{
-  //   axios.get("/api/login")
-  //   .then(res=>navigate('/home'))
-  //   .catch(err=>console.log("plase login to access nsw"))
-  // },[])
+  useEffect(()=>{
+    axios.get(`${process.env.REACT_APP_API_URL}/api/login`)
+    .then(res=>navigate('/home'))
+    .catch(err=>console.log("plase login to access nsw"))
+  },[])
 
   const Submit = (e) => {
   e.preventDefault();
@@ -24,7 +24,7 @@ function Login()
     return; 
   }
   else{
-      axios.post("/api/user/login",{email:email,password:password})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`,{email:email,password:password})
       .then(res=>{
         if(res.data.status===true)
               navigate('/home')

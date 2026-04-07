@@ -34,7 +34,10 @@ const authenticate = async (req, res, next) => {
 
     const newAccessToken = user.getAccessToken()
     res.cookie("accessToken", newAccessToken,{
-         maxAge: 5 * 60 * 1000
+         maxAge: 5 * 60 * 1000,
+         httpOnly:true,
+         secure:true,
+         sameSite:"None"
     })
     req.user = user;
     next();

@@ -17,7 +17,7 @@ function Files()
     const navigate=useNavigate()
     const [loading,setLoading]=useState(false);
     useEffect(()=>{
-    axios.get("/api/folder/files", {params: {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/folder/files`, {params: {
     path: "/files"}
   })
     .then(res => {
@@ -50,7 +50,7 @@ function Files()
       setProgress((p) => (p < 90 ? p + 5 : p));
     }, 200);
 
-    await axios.post("/api/folder/delete", { id, ownpath });
+    await axios.post(`${process.env.REACT_APP_API_URL}/api/folder/delete`, { id, ownpath });
 
     setProgress(100);
     setFupdate(Date.now());

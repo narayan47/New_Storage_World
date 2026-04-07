@@ -49,7 +49,7 @@ function Registration()
     }
     else
     {
-      axios.post('/api/user/register', {
+      axios.post(`${process.env.REACT_APP_API_URL}/api/user/register`, {
         f_name:fname,
         l_name:lname,
         email:email,

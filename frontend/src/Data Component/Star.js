@@ -15,7 +15,7 @@ function Star()
  
  const location=useLocation()
  useEffect(()=>{
-    axios.get("/api/star/files")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/star/files`)
     .then(res => {
  
   
@@ -35,7 +35,7 @@ function Star()
  },[temp])
 
   const Ddelete=(id)=>{
-      axios.post("/api/home/files",{id:id})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/home/files`,{id:id})
       .then(res=>{
         alert(res.data.message);
         setTemp(Date.now())
@@ -44,7 +44,7 @@ function Star()
 
     };
  const star=(id)=>{
-      axios.post("/api/star/create",{id:id})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/star/create`,{id:id})
       .then(res=>setTemp(Date.now()))
       .catch(err=>console.log(err.message,"error"))
     };

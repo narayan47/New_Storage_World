@@ -41,10 +41,16 @@ export const userLogin=(async(req,res)=>{
     })
     user.save();
     res.cookie("accessToken",token,{
-         maxAge: 5 * 60 * 1000
+         maxAge: 5 * 60 * 1000,
+         httpOnly:true,
+         secure:true,
+         sameSite:"None"
     });
     res.cookie("refreshToken",refreshToken,{
-        maxAge:604800000
+        maxAge:604800000,
+        httpOnly:true,
+         secure:true,
+         sameSite:"None"
     });
     res.status(200).json({status:true})
 }

@@ -19,7 +19,7 @@ function ModelFolder(){
     const[fupdate,setFupdate]=useState()
     const navigate=useNavigate()
     useEffect(()=>{
-      axios.post(`/api/path/cheack`,{path:ppath})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/path/cheack`,{path:ppath})
       .then(res=>{})
       .catch(err=>
        {
@@ -33,7 +33,7 @@ function ModelFolder(){
     },[ppath])
     useEffect(()=>{
       setFss(true)
-        axios.get("/api/folder/files", {params: {path:path}})
+        axios.get(`${process.env.REACT_APP_API_URL}/api/folder/files`, {params: {path:path}})
         .then(res=>setFolder(res.data))
         .catch(err=>{
            if(err.response.status===404){
@@ -44,7 +44,7 @@ function ModelFolder(){
     
 
     const Fdelete=(id,ownpath)=>{
-        axios.post("/api/folder/delete",{id:id,ownpath})
+        axios.post(`${process.env.REACT_APP_API_URL}/api/folder/delete`,{id:id,ownpath})
         .then(res=>setFupdate(id))
         .catch(err=>console.log(err.message))
     }

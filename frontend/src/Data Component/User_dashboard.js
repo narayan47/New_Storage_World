@@ -8,7 +8,7 @@ function User_dashboard() {
   const [user,setUser]=useState([]);
   const navigate=useNavigate()
   useEffect(()=>{
-    axios.get("/api/deshbord/data")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/deshbord/data`)
     .then(res=>setUser([res.data]))
     .catch(err=>{if(err.response?.status === 401){
   navigate("/login");

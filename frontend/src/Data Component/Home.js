@@ -21,7 +21,7 @@ function Home({paths})
     let start;
     useEffect(()=>{
       if(paths){
-        start='/api/folder/path'
+        start=`${process.env.REACT_APP_API_URL}/api/folder/path`
          axios.get(`${start}${paths}`)
        .then(res => {
   
@@ -43,7 +43,7 @@ function Home({paths})
       }
       else
       {
-        axios.get("/api/home/files")
+        axios.get(`${process.env.REACT_APP_API_URL}/api/home/files`)
         .then(res => {
   
   if (Array.isArray(res.data)) {
@@ -71,14 +71,14 @@ function Home({paths})
 
 
     const star=(id)=>{
-      axios.post("/api/star/create",{id:id})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/star/create`,{id:id})
       .then(res=>setTemp(res.data))
       .catch(err=>console.log(err.message,"error"))
     };
     const Ddelete=async(id)=>{
       try{
         setLoading(true)
-     await axios.post("/api/home/files",{id:id},{
+     await axios.post(`${process.env.REACT_APP_API_URL}/api/home/files`,{id:id},{
          onUploadProgress: (e) => {
        if (!e.total) return;
 
