@@ -1,25 +1,47 @@
 import express from "express";
-const router =express.Router();
+const router = express.Router();
 import User from "../model/User.js";
 
-router.get("/now",async(req,res)=>{
-    try
-    {
-        const token=req.cookies.refreshToken;
-        if(!token) return res.status(400)
-        const match=User.verifyRefreshToken(token)
-        if(!match) return res.status(400)
-        const data=await User.updateOne({ _id: req.user._id},            
-  { $pull: { refreshTokens: { token: req.cookies.refreshToken } } })
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken")
+router.get("/now", async (req, res) => {
+    try {
+        const token = req.cookies.refreshToken;
+
+        if (!token) {
+            return res.status(400).json({ message: "No token provided" });
+        }
+
+        // verify token (should return decoded data)
+        const decoded = await User.verifyRefreshToken(token);
+        if (!decoded) {
+            return res.status(400).json({ message: "Invalid token" });
+        }
+
+        // remove refresh token from DB
+        await User.updateOne(
+            { _id: decoded._id },
+            { $pull: { refreshToken: { token: token } } }
+        );
+
+        // clear cookies
+        res.clearCookie("accessToken", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        });
+
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        });
+
         res.set("Cache-Control", "no-store");
-        res.send()
+
+        res.status(200).json({ message: "Logged out successfully" });
+
+    } catch (err) {
+        res.status(401).json({ message: err.message });
     }
-    catch(err)
-    {
-        res.status(401).json({message:erro.message})
-    }
-})
+});
 
 export default router;
