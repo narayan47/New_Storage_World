@@ -12,7 +12,7 @@ function Login()
   const navigate=useNavigate();
 
   useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_API_URL}/api/login`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/login`,{withCredentials:true})
     .then(res=>navigate('/home'))
     .catch(err=>console.log("plase login to access nsw"))
   },[])
