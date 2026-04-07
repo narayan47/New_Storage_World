@@ -24,7 +24,7 @@ function Login()
     return; 
   }
   else{
-      axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`,{email:email,password:password})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`,{email:email,password:password},{withCredentials:true})
       .then(res=>{
         if(res.data.status===true)
               navigate('/home')

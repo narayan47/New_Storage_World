@@ -22,7 +22,7 @@ function Home({paths})
     useEffect(()=>{
       if(paths){
         start=`${process.env.REACT_APP_API_URL}/api/folder/path`
-         axios.get(`${start}${paths}`)
+         axios.get(`${start}${paths}`,{withCredentials:true})
        .then(res => {
   
   if (Array.isArray(res.data)) {
@@ -43,7 +43,7 @@ function Home({paths})
       }
       else
       {
-        axios.get(`${process.env.REACT_APP_API_URL}/api/home/files`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/home/files`,{withCredentials:true})
         .then(res => {
   
   if (Array.isArray(res.data)) {
@@ -71,7 +71,7 @@ function Home({paths})
 
 
     const star=(id)=>{
-      axios.post(`${process.env.REACT_APP_API_URL}/api/star/create`,{id:id})
+      axios.post(`${process.env.REACT_APP_API_URL}/api/star/create`,{id:id},{withCredentials:true})
       .then(res=>setTemp(res.data))
       .catch(err=>console.log(err.message,"error"))
     };
@@ -88,7 +88,7 @@ function Home({paths})
 
           setProgress(percent);
       }
-      })
+      },{withCredentials:true})
       .then(res=>{
         setProgress(100)
         alert(res.data.message);

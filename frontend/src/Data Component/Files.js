@@ -19,7 +19,7 @@ function Files()
     useEffect(()=>{
     axios.get(`${process.env.REACT_APP_API_URL}/api/folder/files`, {params: {
     path: "/files"}
-  })
+  },{withCredentials:true})
     .then(res => {
     if (Array.isArray(res.data)) {
       setFolder(res.data);
@@ -50,7 +50,7 @@ function Files()
       setProgress((p) => (p < 90 ? p + 5 : p));
     }, 200);
 
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/folder/delete`, { id, ownpath });
+    await axios.post(`${process.env.REACT_APP_API_URL}/api/folder/delete`, { id, ownpath },{withCredentials:true});
 
     setProgress(100);
     setFupdate(Date.now());

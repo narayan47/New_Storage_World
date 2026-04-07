@@ -18,7 +18,7 @@ import cors from "cors"
 
 
 const app=express();
-app.use(cors());
+app.use(cors({origin:"https://new-storage-worlds.onrender.com",credentials:true}));
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
